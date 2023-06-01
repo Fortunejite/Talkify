@@ -4,9 +4,9 @@ body {
 	padding: 0;
 	background-color: #343A40;
 	color: #FFFFFF;
-  }
+}
 
-  /* CSS for the navbar */
+/* CSS for the navbar */
 .navbar {
 	background-color: #007BFF;
 	padding: 10px;
@@ -47,39 +47,32 @@ body {
 }
 
 /* CSS for the news feed content */
-.news-feed {
-	margin-left: 20px;
+.news-feed, .messages-section, .profile-section {
+	margin: 20px;
 	display: none;
 	padding: 20px;
 	background: #343A40;
+	border-radius: 5px;
 }
 
-.news-item {
+.news-item, .message-item {
 	background-color: #6C757D;
 	border-radius: 5px;
 	padding: 20px;
 	margin-bottom: 20px;
 }
 
-.news-item h3, h6 {
+.news-item h3, .message-item h4 {
 	color: #FFFFFF;
 	margin-top: 0;
 	margin-bottom: 5px;
 }
 
-.news-item p {
+.news-item p, .message-item p {
 	margin-bottom: 10px;
 }
 
 /* CSS for the profile section */
-.profile-section {
-	display: none;
-	margin: 20px;
-	background-color: #343A40;
-	border-radius: 5px;
-	padding: 20px;
-}
-
 .profile-section h2 {
 	color: #007BFF;
 	margin-top: 0;
@@ -109,4 +102,23 @@ body {
 
 .tab-content {
 	display: none;
+}
+
+.friends {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	overflow-x: hidden;
+	border: 2px solid #007BFF;
+}
+
+.friend {
+	border-right: 1px solid #007BFF;
+	width: 50px;
+}
+
+.hh {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }

@@ -1,4 +1,7 @@
 from chat import app
 
 if __name__ == '__main__':
-    app.run(debug=True);
+    """
+    Entry point of the application.
+    """
+    app.run(debug=True)

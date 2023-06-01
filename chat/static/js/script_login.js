@@ -9,6 +9,15 @@ function login() {
         data: formData,
         dataType: 'json',
         success: function(response) {
+            if (response.error === 401) {
+                $('#uname').show();
+                $('#uname').text(response.message);
+                $('#name1').css('border', '2px solid red');
+            } else if (response.error === 402) {
+                $('#upass').show();
+                $('#upass').text(response.message);
+                $('#pass1').css('border', '2px solid red');
+            }
             if (response.redirect) {
                 window.location.href = response.redirect;
             }

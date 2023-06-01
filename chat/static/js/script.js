@@ -26,4 +26,32 @@ $(document).ready(function() {
             }
         });
     });
+
+    const scrollContainer = $('.friends');
+    const content = $('.friend');
+    const scrollAmount = scrollContainer.width(); // Scroll amount equals the width of the container
+    const currentPosition = 0;
+    
+        // Set initial scroll position to the leftmost side
+    scrollContainer.scrollLeft(0);
+
+    $('.next').click(function() {
+        currentPosition += scrollAmount;
+        scrollContainer.animate({ scrollLeft: currentPosition }, 1000);
+    });
+
+    $('.add').click(function () {
+        friend = $(this).siblings('h3').text();
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            data: {'type': 'add_friend', 'friend': friend},
+            success: function(response) {
+                alert('added');
+                window.location.href = '/'
+            }
+
+        });
+    });
+
 });
