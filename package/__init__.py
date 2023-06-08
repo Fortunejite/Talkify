@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
 # Set the secret key for the application
 app.config['SECRET_KEY'] = '8b4275a6deafd1066910155f'
 
-app.config['SERVER_NAME'] = 'https://chat-meo7.onrender.com/'
+app.config['SERVER_NAME'] = 'chat-meo7.onrender.com'
 
 socketio = SocketIO(app)
 
