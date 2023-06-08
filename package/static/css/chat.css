@@ -49,6 +49,7 @@ body {
   height: 100%;
   flex: 70%;
   background: #343A40;
+  display: none;
 }
 
 .main-container .right-container::before {

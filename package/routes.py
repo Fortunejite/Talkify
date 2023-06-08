@@ -5,8 +5,9 @@ This module defines the routes and views for the chat application.
 
 """
 
-from chat import app, login_manager
-from chat.models import User, Post
+from package import app, login_manager, socketio
+from package.models import User, Post, load_user
+from datetime import datetime
 from flask import render_template, request, redirect, jsonify, url_for
 from flask_login import login_required, current_user, login_user, logout_user
 import json
@@ -25,9 +26,13 @@ def index():
     """
     if request.method == 'POST':
         type = request.form.get('type')
+        friend = request.form.get('friend')
         if type == 'add_friend':
-            friend = request.form.get('friend')
-            current_user.add_friend(friend)
+            current_user.send_request(friend)
+        elif type == 'accept':
+            current_user.accept_request(friend)
+        elif type == 'reject':
+            current_user.reject_request(friend)
 
     friends = current_user.get_friends()
     posts = Post.query.all()
@@ -40,7 +45,7 @@ def index():
             'body': post.body
         }
         posts2.append(jj)
-    return render_template('home.html', posts=posts2, user=current_user, friends=friends, users=users)
+    return render_template('chat.html', friends = current_user.get_friends(), user = current_user.username, us = current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -147,23 +152,42 @@ def message(friend):
 @login_required
 def send(friend):
     text = request.form.get('body')
-    date = request.form.get('time')
     owner = request.form.get('sent_by')
 
     message = {
         'body': text,
-        'time': date,
+        'time': datetime.now().strftime('%H:%M:%S'),
         'sent_by': owner 
     }
     current_user.save_message(friend, message)
     print(text)
-    return('Success')
+    socketio.emit(f'{current_user.username}-{friend}', message)
+    return(jsonify(message))
 
 @app.route('/room')
 @login_required
 def chat():
     return render_template('chat.html', friends = current_user.get_friends(), user = current_user.username, us = current_user)
 
-@app.route('/room/info')
-def info():
-    return jsonify()
+@app.route('/notifications')
+@login_required
+def notifications():
+    return render_template('notifications.html', notifications = current_user.get_notifications(), func = load_user)
+
+@app.route('/users')
+@login_required
+def users():
+    users = User.query.all()
+    friends = current_user.get_friends()
+    requests = current_user.get_pending_friends()
+    return render_template('friends.html', user=current_user, friends=friends, users=users, requests=requests)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/profile/<name>')
+@login_required
+def profile(name):
+    user = User.query.filter_by(username=name).first()
+    return render_template('profile.html', user=user, current_user=current_user)

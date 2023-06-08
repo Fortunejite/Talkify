@@ -7,8 +7,9 @@
   <script src="https://kit.fontawesome.com/391827d54c.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.min.js" integrity="sha512-..." crossorigin="anonymous"></script>
   <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-  <title>WhatsApp Clone</title>
+  <title>Talkify</title>
   
 </head>
 <body>
@@ -22,26 +23,14 @@
         <div class="user-img">
           <img class="dp" src="https://www.codewithfaraz.com/InstaPic.png" alt="">
         </div>
-        <div class="nav">
-          <button id="posts">Posts</button>
-          <button id="friends">Friends</button>
-        </div>
         <div class="nav-icons">
-          <li><i class="fas fa-users"></i></li>
-          <li><i class="fas fa-comment-dots"></i></li>
+          <li><i class="fas fa-users" id="user"></i></li>
+          <li><i class="fas fa-comment-dots" id="notif"></i></li>
           <li><i class="fas fa-ellipsis-v"></i></li>
         </div>
       </div>
 
       <!-- Notification -->
-      <div class="notif-box">
-        <i class="fas fa-bell-slash"></i>
-        <div class="notif-text">
-          <p>Get Notified of New Messages</p>
-          <a href="#">Turn on Desktop Notifications ›</a>
-        </div>
-        <i class="fas fa-times"></i>
-      </div>
 
       <!-- Search Container -->
       <div class="search-container">
@@ -66,12 +55,14 @@
                       <p class="time unread">11:49</p>
                       </div>
                       <div class="text-message">
-                      <p id="last">{{ us.get_messages(friend)[-1]['body'] }}</p>
+                      <p id="last"></p>
                       <b>1</b>
                       </div>
                   </div>
                 </div>
             {% endfor %}
+        {% else %}
+          <h2>Get friends in other to start Messsaging</h2>
         {% endif %}
         
         <!-- Other chat boxes... -->
@@ -85,7 +76,7 @@
           <div class="user-img">
             <img class="dp" src="https://images.pexels.com/photos/2474307/pexels-photo-2474307.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
           </div>
-          <h4 id="friend">Leo<br><span>Online</span></h4>
+          <h4 id="friend">Unknown<br><span>Online</span></h4>
         </div>
         <div class="nav-icons">
           <li><i class="fas fa-search"></i></li>

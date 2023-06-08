@@ -9,6 +9,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_socketio import SocketIO
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -21,6 +22,8 @@ app.config['SECRET_KEY'] = '8b4275a6deafd1066910155f'
 
 app.config['SERVER_NAME'] = '127.0.0.1:5000'
 
+socketio = SocketIO(app)
+
 # Initialize the SQLAlchemy extension
 db = SQLAlchemy(app)
 
@@ -31,4 +34,4 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
 # Import routes and models
-from chat import routes, models
+from package import routes, models

@@ -5,8 +5,9 @@ This module defines the database models for the chat application.
 
 """
 
-from chat import db, login_manager, bcrypt
+from package import db, login_manager, bcrypt
 from flask_login import UserMixin
+from datetime import datetime
 import json
 
 @login_manager.user_loader
@@ -21,7 +22,11 @@ def load_user(user_id):
     - user (User): The user object.
 
     """
-    return User.query.get(int(user_id))
+
+    user = User.query.filter_by(id=user_id).first()
+    if user:
+        return user
+    return None
 
 class User(db.Model, UserMixin):
     """
@@ -47,6 +52,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
     friends = db.Column(db.JSON, default='[]')
+    friend_request = db.Column(db.JSON, default='[]')
+    pending_request = db.Column(db.JSON, default='[]')
+    notifications = db.Column(db.JSON, default='[]')
     messages = db.Column(db.JSON, default='{}')
     posts = db.relationship('Post', backref='author', lazy=True)
 
@@ -101,6 +109,16 @@ class User(db.Model, UserMixin):
             else:
                 return None
             
+    def get_pending_friends(self):
+        if self.pending_request == "":
+            return None
+        else:
+            friends = json.loads(self.pending_request)
+            if friends:
+                return friends
+            else:
+                return None
+            
     def add_friend(self, name):
         if self.friends == "[]":
             friend = []
@@ -121,6 +139,81 @@ class User(db.Model, UserMixin):
         db.session.commit()
         print('Success')
 
+    def send_request(self, name):
+        friend = User.query.filter_by(username=name).first()
+        ls = json.loads(friend.friend_request)
+        ls.append(self.username)
+        friend.friend_request = json.dumps(ls)
+        ls = json.loads(self.pending_request)
+        ls.append(name)
+        self.pending_request = json.dumps(ls)
+        data = {
+            'category': 'Request',
+            'id': self.id,
+            'message': f'{self.username} sent you a friend request',
+            'time': datetime.now().strftime('%H:%M:%S')
+        }
+        notif = json.loads(friend.notifications)
+        notif.append(data)
+        friend.notifications = json.dumps(notif)
+        db.session.add(friend, self)
+        db.session.commit()
+
+    def accept_request(self, name):
+        self.add_friend(name)
+        user = User.query.filter_by(username=name).first()
+        user.add_friend(self.username)
+        ls = json.loads(self.friend_request)
+        ls.remove(name)
+        self.friend_request = json.dumps(ls)
+        ls = json.loads(user.pending_request)
+        ls.remove(self.username)
+        user.pending_request = json.dumps(ls)
+        notif = json.loads(self.notifications)
+        j = 0
+        for i in notif:
+            if i['message'] == f'{name} sent you a friend request':
+                notif.pop(j)
+                break
+            j += 1
+        self.notifications = json.dumps(notif)
+        notif = json.loads(user.notifications)
+        data = {
+            'category': 'Accept',
+            'message': f'{self.username} accepted your friend request',
+            'time': datetime.now().strftime('%H:%M:%S')
+            }
+        notif.append(data)
+        user.notifications = json.dumps(notif)
+        db.session.add(self)
+        db.session.add(user)
+        db.session.commit()
+
+    def reject_request(self, name):
+        user = User.query.filter_by(username=name).first()
+        ls = json.loads(self.friend_request)
+        ls.remove(name)
+        self.friend_request = json.dumps(ls)
+        notif = json.loads(self.notifications)
+        j = 0
+        for i in notif:
+            if i['message'] == f'{name} sent you a friend request':
+                notif.pop(j)
+                break
+            j += 1
+        self.notifications = json.dumps(notif)
+        notif = json.loads(user.notifications)
+        data = {
+            'category': 'Reject',
+            'message': f'{self.username} rejected your friend request',
+            'time': datetime.now().strftime('%H:%M:%S')
+            }
+        notif.append(data)
+        user.notifications = json.dumps(notif)
+        db.session.add(self)
+        db.session.add(user)
+        db.session.commit()
+
 
     def get_messages(self, name):
         messages = json.loads(self.messages)
@@ -131,9 +224,17 @@ class User(db.Model, UserMixin):
         messages = json.loads(self.messages)
         messages[name].append(message)
         self.messages = json.dumps(messages)
-        db.session.add(self)
+        friend = User.query.filter_by(username=name).first()
+        messages = json.loads(friend.messages)
+        messages[self.username].append(message)
+        friend.messages = json.dumps(messages)
+        db.session.add(self, friend)
         db.session.commit()
 
+    def get_notifications(self):
+        notif = json.loads(self.notifications)
+        return notif
+    
 class Post(db.Model):
     """
     Represents a post in the chat application.
@@ -146,8 +247,8 @@ class Post(db.Model):
     Methods:
     - __repr__(): Returns a string representation of the post object.
     - get_sender_username(): Retrieves the username of the post sender.
-
     """
+    
 
     id = db.Column(db.Integer, primary_key=True)
     sender = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -159,8 +260,8 @@ class Post(db.Model):
 
         Returns:
         - str: The string representation of the post.
-
         """
+        
         return f'<Post {self.id}>'
 
     def get_sender_username(self):
@@ -169,16 +270,10 @@ class Post(db.Model):
 
         Returns:
         - str or None: The username of the sender if found, None otherwise.
-
-        """
+    """
+        
         sender = User.query.get(self.sender)
         if sender:
             return sender.username
         else:
             return None
-        
-
-class message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(1024), nullable=False)
-    time = db.Column(db.String(30), nullable=False)

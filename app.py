@@ -1,4 +1,4 @@
-from chat import app
+from package import app
 
 if __name__ == '__main__':
     """

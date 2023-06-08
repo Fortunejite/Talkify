@@ -47,11 +47,15 @@ $(document).ready(function() {
             type: 'POST',
             data: {'type': 'add_friend', 'friend': friend},
             success: function(response) {
-                alert('added');
-                window.location.href = '/'
+                alert('Request Sent');
+                window.location.href = '/users'
             }
 
         });
+    });
+
+    $('.profile').click(function (event) {
+        window.location.href = '/profile/' + $(this).siblings('h3').text();
     });
 
 });
