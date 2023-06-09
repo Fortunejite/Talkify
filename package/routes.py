@@ -8,9 +8,10 @@ This module defines the routes and views for the chat application.
 from package import app, login_manager, socketio
 from package.models import User, Post, load_user
 from datetime import datetime
-from flask import render_template, request, redirect, jsonify, url_for
+from flask import render_template, request, redirect, jsonify, url_for, send_file
 from flask_login import login_required, current_user, login_user, logout_user
 import json
+from io import BytesIO
 
 @app.route('/', methods=['POST', 'GET'])
 @login_required
@@ -103,16 +104,29 @@ def register():
     username = request.form.get('username', None)
     password = request.form.get('password', None)
     email = request.form.get('email', None)
+    image_data = request.files['image'].read()
     if not username or not password or not email:
         return jsonify(message='Username, Password or email is empty', category='danger', redirect=url_for('register')), 400, {'ContentType': 'application/json'}
     target = User.query.filter_by(username=username).first()
+    target_email = User.query.filter_by(email=email).first()
     if target:
         return jsonify(message=f'{username} already exists', category='danger', redirect=url_for('register')), 406, {'ContentType': 'application/json'}
+    elif target_email:
+        return jsonify(message=f'{email} already exists', category='danger', redirect=url_for('register')), 406, {'ContentType': 'application/json'}
     else:
-        new_user = User(username=username, password_hash=password, email=email)
+        new_user = User(username=username, password_hash=password, email=email, avatar=image_data)
         new_user.save()
         login_user(new_user)
         return jsonify(message=f'{username} registered', category='success', redirect=url_for('index')), 200, {'ContentType': 'application/json'}
+
+@app.route('/image/<username>')
+@login_required
+def display_image(username):
+    user =User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify(message=f'{username} does not exist', category='danger', redirect=url_for('index')), 406, {'ContentType': 'application/json'}
+    image = user.avatar
+    return send_file(BytesIO(image), mimetype='image/jpeg')
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -191,3 +205,4 @@ def about():
 def profile(name):
     user = User.query.filter_by(username=name).first()
     return render_template('profile.html', user=user, current_user=current_user)
+

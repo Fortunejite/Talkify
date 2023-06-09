@@ -18,12 +18,10 @@
         <div class="form-container sign-up-container">
             <form action="#">
                 <h1>Create Account</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                <span>or use your email for registration</span>
+                
+                <img id="profile" src="{{ url_for('static', filename='images/avater.png')}}" alt="" width="100px" height="100px">
+                <span id="prop">Select profile picture</span>
+                <input type="file" id="file" name="file" accept="image/*" placeholder="Select profile picture">
                 <input type="text" id="name2" placeholder="Username" />
                 <p id="unames"></p>
                 <input type="email" id="email" placeholder="Email" />

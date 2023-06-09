@@ -23,7 +23,7 @@ def load_user(user_id):
 
     """
 
-    user = User.query.filter_by(id=user_id).first()
+    user = User.query.get(int(user_id))
     if user:
         return user
     return None
@@ -51,6 +51,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(30), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
+    avatar = db.Column(db.LargeBinary)
     friends = db.Column(db.JSON, default='[]')
     friend_request = db.Column(db.JSON, default='[]')
     pending_request = db.Column(db.JSON, default='[]')

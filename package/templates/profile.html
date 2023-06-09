@@ -11,15 +11,17 @@
 </head>
 <body>
     <div id="main">
-        <h2>User Profile</h2>
-        <p id="name">Name: {{user.username}}</p>
+        <div id="profile-container">
+            <img id="profile" src="/image/{{user.username}}" alt="{{user}}" width="200px" height="200px">
+            <h1 id="name">{{user.username}}</h1>
+        </div>
         <p id="email">Email: {{user.email}}</p>
         
         {% if user.get_friends() %}
             <h3>Friends: </h3>
             <ul>
                 {% for i in user.get_friends() %}
-                    <li>{{i}}</li>
+                    <li><img class="dp" src="/image/{{i}}" alt="{{i}}">{{i}}</li>
                 {% endfor %}
             </ul>
             {% if current_user.username == user.username %}

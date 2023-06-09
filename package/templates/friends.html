@@ -17,12 +17,17 @@
                 {% if userz.username != user.username %}
                     {% if friends %}
                         {% if  userz.username not in friends %}
-                            {% if request %}
+                            {% if requests %}
                                 {% if  userz.username not in requests %}
-                                    <div id="user">
-                                        <h3>{{userz.username}}</h3>
-                                        <button name="add" class="add">Send friend request</button>
-                                        <button name="add" class="profile">Visit profile</button>
+                                    <div id="user" class="pic">
+                                        <div id="pic">
+                                            <img class='dp' src="/image/{{userz.username}}" alt="{{userz.username}}" width="200px" height="200px">
+                                        </div>
+                                        <div>
+                                            <h3>{{userz.username}}</h3>
+                                            <button name="add" class="add">Send friend request</button>
+                                            <button name="add" class="profile">Visit profile</button>
+                                        </div>
 
                                     </div>
                                 {% endif %}

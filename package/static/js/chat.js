@@ -109,10 +109,9 @@ $(document).ready(function() {
     window.location.href = '/notifications';
   });
 
-  $('#user').click(function(event){
+  $('#users').click(function(event){
     window.location.href = '/users';
   });
-
   
 
   $('.right-container').css('display','none')

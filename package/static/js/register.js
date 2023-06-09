@@ -1,15 +1,16 @@
 function createUser() {
-    const data = {
-        'username': $('#name2').val(),
-        'email': $('#email').val(),
-        'password': $('#pass2').val()
-    };
+    const data = new FormData();
+    data.append('username', $('#name2').val());
+    data.append('email', $('#email').val());
+    data.append('password', $('#pass2').val());
+    data.append('image', $('#file')[0].files[0]);
 
     $.ajax({
         url: '/register',
         type: 'POST',
         data: data,
-        dataType: 'json',
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Prevent jQuery from setting the content type
         success: function(response) {
             alert(response.message)
             if (response.redirect) {
@@ -26,6 +27,7 @@ function createUser() {
     });
 }
 
+
 $(document).ready(function() {
     $('#up').click(function(event) {
         event.preventDefault();
@@ -37,7 +39,8 @@ $(document).ready(function() {
         $('#uemail').hide();
         $('#upass2').hide();
         $('#upass3').hide();
-        if ($('#name2').val() && $('#email').val() && $('#pass2').val() && $('#pass3').val()) {
+        $('#prop').css('color', 'white');
+        if ($('#name2').val() && $('#email').val() && $('#pass2').val() && $('#pass3').val() && $('#file')[0].files[0]) {
             if ($('#pass2').val() === $('#pass3').val()) {
                 createUser();
             } else {
@@ -62,6 +65,8 @@ $(document).ready(function() {
                 $('#upass3').show();
                 $('#upass3').text('Please enter password');
                 $('#pass3').css('border', '2px solid red');
+            } else if (!$('#file')[0].files[0]) {
+                $('#prop').css('color', 'red');
             }
         }
     });

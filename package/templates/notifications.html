@@ -19,9 +19,9 @@
                 {% for notification in notifications %}
                     <div class="notification">
                         {% if notification.id %}
-                        <div class="notification-image">
-                            <img src="{{ notification.image }}" alt="{{ func(notification.id).username }}">
-                        </div>
+                            <div class="notification-image">
+                                <img src="/image/{{ func(notification.id).username }}" alt="{{ func(notification.id).username }}">
+                            </div>
                         {% endif %}
                         <div class="notification-text">
                             <p id="message">{{ notification.message }}</p>
