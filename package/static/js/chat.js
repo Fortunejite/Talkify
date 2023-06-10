@@ -5,6 +5,9 @@ function get_messages(name) {
     success: function(response) {
       const messages = response.messages;
       $('#friend').text(name)
+
+      $('.dp').attr('src', "/image/"+name);
+
       const parent = $('.chat-container')
       parent.empty();
       if (messages) {
