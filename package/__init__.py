@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
 # Set the secret key for the application
 app.config['SECRET_KEY'] = '8b4275a6deafd1066910155f'
 
-app.config['SERVER_NAME'] = 'cryptnex.tech'
+app.config['SERVER_NAME'] = '127.0.0.1:8000'
 
 socketio = SocketIO(app)
 
