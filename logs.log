@@ -115,3 +115,126 @@ you may need to install the package for your language of choice, or simply load 
 !!!!!!!!!!! END OF WARNING !!!!!!!!!!
 spawned uWSGI worker 1 (pid: 3356255, cores: 4)
 spawned uWSGI worker 2 (pid: 3356256, cores: 4)
+*** Starting uWSGI 2.0.18-debian (64bit) on [Sat Jun 10 20:58:42 2023] ***
+compiled with version: 10.0.1 20200405 (experimental) [master revision 0be9efad938:fcb98e4978a:705510a708d3642c9c962beb663c476167e4e8a4] on 11 April 2020 11:15:55
+os: Linux-5.15.0-1021-aws #25~20.04.1-Ubuntu SMP Thu Sep 22 13:59:08 UTC 2022
+nodename: 117068-web-01
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/ubuntu/Talkify
+detected binary path: /usr/bin/uwsgi-core
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 3811
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8000 fd 3
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 700088 bytes (683 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+!!!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!
+no request plugin is loaded, you will not be able to manage requests.
+you may need to install the package for your language of choice, or simply load it with --plugin.
+!!!!!!!!!!! END OF WARNING !!!!!!!!!!
+spawned uWSGI worker 1 (pid: 3358733, cores: 4)
+spawned uWSGI worker 2 (pid: 3358734, cores: 4)
+-- unavailable modifier requested: 0 --
+*** Starting uWSGI 2.0.18-debian (64bit) on [Sat Jun 10 21:12:43 2023] ***
+compiled with version: 10.0.1 20200405 (experimental) [master revision 0be9efad938:fcb98e4978a:705510a708d3642c9c962beb663c476167e4e8a4] on 11 April 2020 11:15:55
+os: Linux-5.15.0-1021-aws #25~20.04.1-Ubuntu SMP Thu Sep 22 13:59:08 UTC 2022
+nodename: 117068-web-01
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/ubuntu/Talkify
+detected binary path: /usr/bin/uwsgi-core
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 3811
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8000 fd 3
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 700088 bytes (683 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+*** no app loaded. going in full dynamic mode ***
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+!!!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!
+no request plugin is loaded, you will not be able to manage requests.
+you may need to install the package for your language of choice, or simply load it with --plugin.
+!!!!!!!!!!! END OF WARNING !!!!!!!!!!
+spawned uWSGI worker 1 (pid: 3362961, cores: 4)
+spawned uWSGI worker 2 (pid: 3362962, cores: 4)
+*** Starting uWSGI 2.0.18-debian (64bit) on [Sat Jun 10 21:16:08 2023] ***
+compiled with version: 10.0.1 20200405 (experimental) [master revision 0be9efad938:fcb98e4978a:705510a708d3642c9c962beb663c476167e4e8a4] on 11 April 2020 11:15:55
+os: Linux-5.15.0-1021-aws #25~20.04.1-Ubuntu SMP Thu Sep 22 13:59:08 UTC 2022
+nodename: 117068-web-01
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/ubuntu/Talkify
+detected binary path: /usr/bin/uwsgi-core
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 3811
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8000 fd 3
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 700088 bytes (683 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+*** no app loaded. going in full dynamic mode ***
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+!!!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!
+no request plugin is loaded, you will not be able to manage requests.
+you may need to install the package for your language of choice, or simply load it with --plugin.
+!!!!!!!!!!! END OF WARNING !!!!!!!!!!
+spawned uWSGI worker 1 (pid: 3363889, cores: 4)
+spawned uWSGI worker 2 (pid: 3363890, cores: 4)
+-- unavailable modifier requested: 0 --
+*** Starting uWSGI 2.0.18-debian (64bit) on [Sat Jun 10 21:24:51 2023] ***
+compiled with version: 10.0.1 20200405 (experimental) [master revision 0be9efad938:fcb98e4978a:705510a708d3642c9c962beb663c476167e4e8a4] on 11 April 2020 11:15:55
+os: Linux-5.15.0-1021-aws #25~20.04.1-Ubuntu SMP Thu Sep 22 13:59:08 UTC 2022
+nodename: 117068-web-01
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/ubuntu/Talkify
+detected binary path: /usr/bin/uwsgi-core
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 3811
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (127.0.0.1:8000).
+bind(): Address already in use [core/socket.c line 769]
