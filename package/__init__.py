@@ -22,7 +22,7 @@ app.config['SECRET_KEY'] = '8b4275a6deafd1066910155f'
 
 app.config['SERVER_NAME'] = 'cryptnex.tech'
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode='gevent')
 
 # Initialize the SQLAlchemy extension
 db = SQLAlchemy(app)
