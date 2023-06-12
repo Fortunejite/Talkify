@@ -106,13 +106,13 @@ def register():
     email = request.form.get('email', None)
     image_data = request.files['image'].read()
     if not username or not password or not email:
-        return jsonify(message='Username, Password or email is empty', category='danger', redirect=url_for('register')), 400, {'ContentType': 'application/json'}
+        return jsonify(message='Username, Password or email is empty', category='danger', redirect=url_for('index')), 400, {'ContentType': 'application/json'}
     target = User.query.filter_by(username=username).first()
     target_email = User.query.filter_by(email=email).first()
     if target:
-        return jsonify(message=f'{username} already exists', category='danger', redirect=url_for('register')), 406, {'ContentType': 'application/json'}
+        return jsonify(message=f'{username} already exists', category='danger', redirect=url_for('index')), 406, {'ContentType': 'application/json'}
     elif target_email:
-        return jsonify(message=f'{email} already exists', category='danger', redirect=url_for('register')), 406, {'ContentType': 'application/json'}
+        return jsonify(message=f'{email} already exists', category='danger', redirect=url_for('index')), 406, {'ContentType': 'application/json'}
     else:
         new_user = User(username=username, password_hash=password, email=email, avatar=image_data)
         new_user.save()
