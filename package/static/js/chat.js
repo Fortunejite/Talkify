@@ -7,6 +7,7 @@ function get_messages(name) {
       $('#friend').text(name)
 
       $('.dp').attr('src', "/image/"+name);
+      $('.dp').attr('alt', name);
 
       const parent = $('.chat-container')
       parent.empty();
@@ -105,7 +106,7 @@ $(document).ready(function() {
   });
 
   $('img-box').click(function() {
-    window.location.href = '/profile/' + $(this).siblings('h4').text();
+    window.location.href = '/profile/' + $(this).attr('alt');
   });
 
   $('#notif').click(function(event) {
