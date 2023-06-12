@@ -13,6 +13,8 @@ function createUser() {
         contentType: false, // Prevent jQuery from setting the content type
         success: function(response) {
             alert(response.message)
+            $('#up').show();
+            $('#loadingSpinner').hide();
             if (response.redirect) {
                 window.location.href = response.redirect;
             }
@@ -20,6 +22,8 @@ function createUser() {
         error: function(xhr) {
             const response = JSON.parse(xhr.responseText)
             alert(response.message);
+            $('#up').show();
+            $('#loadingSpinner').hide();
             if (response.redirect) {
                 window.location.href = response.redirect;
             }
@@ -43,6 +47,8 @@ $(document).ready(function() {
         if ($('#name2').val() && $('#email').val() && $('#pass2').val() && $('#pass3').val() && $('#file')[0].files[0]) {
             if ($('#pass2').val() === $('#pass3').val()) {
                 createUser();
+                $('#up').hide();
+                $('#loadingSpinner').show();
             } else {
                 $('#upass3').show();
                 $('#upass3').text('Passwords do not match');
