@@ -13,6 +13,7 @@ function login() {
                 $('#uname').show();
                 $('#uname').text(response.message);
                 $('#name1').css('border', '2px solid red');
+             
             } else if (response.error === 402) {
                 $('#upass').show();
                 $('#upass').text(response.message);
@@ -21,6 +22,8 @@ function login() {
             if (response.redirect) {
                 window.location.href = response.redirect;
             }
+            $('#sign').show();
+            $('#loadingSpinner').hide();
         },
         error: function(xhr) {
             const response = JSON.parse(xhr.responseText);
@@ -35,6 +38,8 @@ function login() {
                 $('#upass').text(response.message);
                 $('#pass1').css('border', '2px solid red');
             }
+            $('#sign').show();
+            $('#loadingSpinner').hide();
         }
     });
 }
@@ -48,6 +53,8 @@ $(document).ready(function() {
         $('#upass').hide();
         if ($('#name1').val() && $('#pass1').val()) {
             login();
+            $('#sign').hide();
+            $('#loadingSpinner').show();
         } else {
             if (!$('#name1').val()) {
                 $('#uname').show();
