@@ -4,7 +4,7 @@ Talkify is a web application that allows users to communicate and connect with e
 
 ## Deployment
 
-The Talkify web application is currently deployed and accessible at [cryptnex.tech](https://cryptnex.tech).
+The Talkify web application is currently deployed and accessible at [cryptnex.tech](http://cryptnex.tech/).
 
 ## Final Project Blog Article
 
