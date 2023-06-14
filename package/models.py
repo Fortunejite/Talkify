@@ -1,4 +1,9 @@
-# models.py
+"""
+models.py
+==============================
+This module defines the database models for the chat application.
+
+"""
 
 from package import db, login_manager, bcrypt
 from flask_login import UserMixin
@@ -15,7 +20,9 @@ def load_user(user_id):
 
     Returns:
     - user (User): The user object.
+
     """
+
     user = User.query.get(int(user_id))
     if user:
         return user
@@ -30,13 +37,14 @@ class User(db.Model, UserMixin):
     - username (str): The username of the user.
     - email (str): The email address of the user.
     - password_hash (str): The hashed password of the user.
-    - avatar (bytes): The avatar (profile picture) of the user.
-    - friends (list): The list of user's friends.
-    - friend_requests_sent (list): The list of friend requests sent by the user.
-    - pending_friend_requests (list): The list of pending friend requests received by the user.
-    - notifications (list): The list of user's notifications.
-    - messages (dict): The dictionary storing user's chat messages with other users.
     - posts (relationship): The posts created by the user.
+
+    Methods:
+    - __repr__(): Returns a string representation of the user object.
+    - set_password(password): Sets the password for the user.
+    - check_password(password): Checks if the provided password matches the user's password.
+    - save(): Saves the user object to the database.
+
     """
 
     id = db.Column(db.Integer, primary_key=True)
@@ -44,11 +52,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
     avatar = db.Column(db.LargeBinary)
-    friends = db.Column(db.JSON, default=list)
-    friend_requests_sent = db.Column(db.JSON, default=list)
-    pending_friend_requests = db.Column(db.JSON, default=list)
-    notifications = db.Column(db.JSON, default=list)
-    messages = db.Column(db.JSON, default=dict)
+    friends = db.Column(db.JSON, default='[]')
+    friend_request = db.Column(db.JSON, default='[]')
+    pending_request = db.Column(db.JSON, default='[]')
+    notifications = db.Column(db.JSON, default='[]')
+    messages = db.Column(db.JSON, default='{}')
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
@@ -57,6 +65,7 @@ class User(db.Model, UserMixin):
 
         Returns:
         - str: The string representation of the user.
+
         """
         return f'<User {self.username}>'
 
@@ -66,6 +75,7 @@ class User(db.Model, UserMixin):
 
         Parameters:
         - password (str): The password to set.
+
         """
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -78,111 +88,171 @@ class User(db.Model, UserMixin):
 
         Returns:
         - bool: True if the passwords match, False otherwise.
+
         """
         return bcrypt.check_password_hash(self.password_hash, password)
 
     def save(self):
         """
         Saves the user object to the database.
+
         """
         db.session.add(self)
         db.session.commit()
 
     def get_friends(self):
-        if not self.friends:
+        if self.friends == "":
             return None
-        else:
-            return json.loads(self.friends)
-
-    def get_pending_friend_requests(self):
-        if not self.pending_friend_requests:
-            return None
-        else:
-            return json.loads(self.pending_friend_requests)
-
-    def add_friend(self, friend_username):
-        if not self.friends:
-            self.friends = json.dumps([friend_username])
-            self.messages = json.dumps({friend_username: []})
         else:
             friends = json.loads(self.friends)
-            friends.append(friend_username)
+            if friends:
+                return friends
+            else:
+                return None
+            
+    def get_pending_friends(self):
+        if self.pending_request == "":
+            return None
+        else:
+            friends = json.loads(self.pending_request)
+            if friends:
+                return friends
+            else:
+                return None
+            
+    def add_friend(self, name):
+        if self.friends == "[]":
+            friend = []
+            friend.append(name)
+            self.friends = json.dumps(friend)
+            messages = json.loads(self.messages)
+            messages[name] = []
+            self.messages = json.dumps(messages)
+        else:
+            friends = json.loads(self.friends)
+            friends.append(name)
             self.friends = json.dumps(friends)
             messages = json.loads(self.messages)
-            messages[friend_username] = []
+            messages[name] = []
             self.messages = json.dumps(messages)
 
-        self.save()
+        db.session.add(self)
+        db.session.commit()
+        print('Success')
 
-    def send_friend_request(self, friend_username):
-        friend = User.query.filter_by(username=friend_username).first()
-        friend.friend_requests_sent.append(self.username)
-        friend.notifications.append({
+    def send_request(self, name):
+        friend = User.query.filter_by(username=name).first()
+        ls = json.loads(friend.friend_request)
+        ls.append(self.username)
+        friend.friend_request = json.dumps(ls)
+        ls = json.loads(self.pending_request)
+        ls.append(name)
+        self.pending_request = json.dumps(ls)
+        data = {
             'category': 'Request',
             'id': self.id,
             'message': f'{self.username} sent you a friend request',
             'time': datetime.now().strftime('%H:%M:%S')
-        })
-        friend.save()
+        }
+        notif = json.loads(friend.notifications)
+        notif.append(data)
+        friend.notifications = json.dumps(notif)
+        db.session.add(friend, self)
+        db.session.commit()
 
-    def accept_friend_request(self, friend_username):
-        self.add_friend(friend_username)
-        friend = User.query.filter_by(username=friend_username).first()
-        friend.add_friend(self.username)
-        self.friend_requests_sent.remove(friend_username)
-        friend.pending_friend_requests.remove(self.username)
-        self.notifications.append({
+    def accept_request(self, name):
+        self.add_friend(name)
+        user = User.query.filter_by(username=name).first()
+        user.add_friend(self.username)
+        ls = json.loads(self.friend_request)
+        ls.remove(name)
+        self.friend_request = json.dumps(ls)
+        ls = json.loads(user.pending_request)
+        ls.remove(self.username)
+        user.pending_request = json.dumps(ls)
+        notif = json.loads(self.notifications)
+        j = 0
+        for i in notif:
+            if i['message'] == f'{name} sent you a friend request':
+                notif.pop(j)
+                break
+            j += 1
+        self.notifications = json.dumps(notif)
+        notif = json.loads(user.notifications)
+        data = {
             'category': 'Accept',
             'message': f'{self.username} accepted your friend request',
             'time': datetime.now().strftime('%H:%M:%S')
-        })
-        self.save()
-        friend.save()
+            }
+        notif.append(data)
+        user.notifications = json.dumps(notif)
+        db.session.add(self)
+        db.session.add(user)
+        db.session.commit()
 
-    def reject_friend_request(self, friend_username):
-        friend = User.query.filter_by(username=friend_username).first()
-        self.friend_requests_sent.remove(friend_username)
-        self.notifications.append({
+    def reject_request(self, name):
+        user = User.query.filter_by(username=name).first()
+        ls = json.loads(self.friend_request)
+        ls.remove(name)
+        self.friend_request = json.dumps(ls)
+        notif = json.loads(self.notifications)
+        j = 0
+        for i in notif:
+            if i['message'] == f'{name} sent you a friend request':
+                notif.pop(j)
+                break
+            j += 1
+        self.notifications = json.dumps(notif)
+        notif = json.loads(user.notifications)
+        data = {
             'category': 'Reject',
             'message': f'{self.username} rejected your friend request',
             'time': datetime.now().strftime('%H:%M:%S')
-        })
-        self.save()
-        friend.save()
+            }
+        notif.append(data)
+        user.notifications = json.dumps(notif)
+        db.session.add(self)
+        db.session.add(user)
+        db.session.commit()
 
-    def get_chat_messages(self, friend_username):
-        messages = json.loads(self.messages)
-        return messages.get(friend_username, [])
 
-    def save_chat_message(self, friend_username, message):
+    def get_messages(self, name):
         messages = json.loads(self.messages)
-        messages[friend_username].append(message)
+        messages = messages[name]
+        return messages
+    
+    def save_message(self, name, message):
+        messages = json.loads(self.messages)
+        messages[name].append(message)
         self.messages = json.dumps(messages)
-        friend = User.query.filter_by(username=friend_username).first()
-        friend.messages[self.username].append(message)
-        friend.save()
-        self.save()
+        friend = User.query.filter_by(username=name).first()
+        messages = json.loads(friend.messages)
+        messages[self.username].append(message)
+        friend.messages = json.dumps(messages)
+        db.session.add(self, friend)
+        db.session.commit()
 
     def get_notifications(self):
-        return self.notifications
-
-
+        notif = json.loads(self.notifications)
+        return notif
+    
 class Post(db.Model):
     """
     Represents a post in the chat application.
 
     Attributes:
     - id (int): The unique identifier of the post.
-    - sender_id (int): The ID of the user who sent the post.
+    - sender (int): The ID of the user who sent the post.
     - body (str): The content of the post.
 
     Methods:
     - __repr__(): Returns a string representation of the post object.
     - get_sender_username(): Retrieves the username of the post sender.
     """
+    
 
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    sender = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     body = db.Column(db.String(1024), nullable=False)
 
     def __repr__(self):
@@ -192,6 +262,7 @@ class Post(db.Model):
         Returns:
         - str: The string representation of the post.
         """
+        
         return f'<Post {self.id}>'
 
     def get_sender_username(self):
@@ -200,8 +271,9 @@ class Post(db.Model):
 
         Returns:
         - str or None: The username of the sender if found, None otherwise.
-        """
-        sender = User.query.get(self.sender_id)
+    """
+        
+        sender = User.query.get(self.sender)
         if sender:
             return sender.username
         else:

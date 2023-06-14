@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/391827d54c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.min.js" integrity="sha512-..." crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+  <title>Talkify</title>
+  
+</head>
+<body>
+    <h6>{{user}}</h6>
+  <div class="background-green"></div>
+    
+  <div class="main-container">
+    <div class="left-container">
+      <!-- Header -->
+      <div class="header">
+        <div class="user-img">
+          <img class="dpp" src="/image/{{user}}" alt="{{user}}" id="user">
+        </div>
+        <div class="nav-icons">
+          <li><i class="fas fa-users" id="users"></i></li>
+          <li><i class="fas fa-comment-dots" id="notif"></i></li>
+          <li><i class="fas fa-ellipsis-v"></i></li>
+        </div>
+      </div>
+
+      <!-- Notification -->
+
+      <!-- Search Container -->
+      <div class="search-container">
+        <div class="input">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search or start new chat">
+        </div>
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <!-- Chats -->
+      <div class="chat-list">
+        {% if friends%}
+            {% for friend in friends %}
+                <div class="chat-box">
+                  <div class="img-box">
+                      <img class="img-cover" src="/image/{{friend}}" alt="{{user}}">
+                  </div>
+                  <div class="chat-details">
+                      <div class="text-head">
+                      <h4 id="ffriend">{{friend}}</h4>
+                      <p class="time unread">11:49</p>
+                      </div>
+                      <div class="text-message">
+                      <p id="last"></p>
+                      <b>1</b>
+                      </div>
+                  </div>
+                </div>
+            {% endfor %}
+        {% else %}
+          <h2>Get friends in other to start Messsaging</h2>
+        {% endif %}
+        
+        <!-- Other chat boxes... -->
+      </div>
+    </div>
+
+    <div class="right-container">
+      <!-- Header -->
+      <div class="header">
+        <div class="img-text">
+          <div class="user-img">
+            <img class="dp" src="https://images.pexels.com/photos/2474307/pexels-photo-2474307.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+          </div>
+          <h4 id="friend">Unknown<br><span>Online</span></h4>
+        </div>
+        <div class="nav-icons">
+          <li><i class="fas fa-search"></i></li>
+          <li><i class="fas fa-ellipsis-v"></i></li>
+        </div>
+      </div>
+
+      <!-- Chat Container -->
+      <div class="chat-container">
+        
+        <!-- Other message boxes... -->
+      </div>
+
+      <!-- Input Bottom -->
+      <div class="chatbox-input">
+        <i class="far fa-grin"></i>
+        <i class="fas fa-paperclip"></i>
+        <input type="text" placeholder="Type a message", id="message">
+        <button id="send">Send</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

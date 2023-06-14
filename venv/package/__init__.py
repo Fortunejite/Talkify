@@ -20,18 +20,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
 # Set the secret key for the application
 app.config['SECRET_KEY'] = '8b4275a6deafd1066910155f'
 
+# Set the server name for the application
 app.config['SERVER_NAME'] = 'cryptnex.tech'
 
+# Initialize the SocketIO extension with the Flask application
 socketio = SocketIO(app, async_mode='gevent')
 
-# Initialize the SQLAlchemy extension
+# Initialize the SQLAlchemy extension with the Flask application
 db = SQLAlchemy(app)
 
-# Initialize the Bcrypt extension
+# Initialize the Bcrypt extension with the Flask application
 bcrypt = Bcrypt(app)
 
-# Initialize the LoginManager extension
+# Initialize the LoginManager extension with the Flask application
 login_manager = LoginManager(app)
 
-# Import routes and models
+# Import routes and models after initializing extensions
 from package import routes, models

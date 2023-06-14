@@ -1,0 +1,3 @@
+#!/bin/bash
+
+venv/bin/gunicorn --worker-class gevent --threads 4 app:app
