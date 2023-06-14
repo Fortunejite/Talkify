@@ -4,7 +4,7 @@ Talkify is a web application that allows users to communicate and connect with e
 
 ## Deployment
 
-The Talkify web application is currently deployed and accessible at [cryptnex.tech](https://www.cryptnex.tech).
+The Talkify web application is currently deployed and accessible at [cryptnex.tech](https://cryptnex.tech).
 
 ## Final Project Blog Article
 
@@ -20,10 +20,10 @@ To learn more about the author and their professional background, you can visit 
 
 To run Talkify locally on your machine, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/talkify.git`
-2. Navigate to the project directory: `cd talkify`
+1. Clone the repository: `git clone https://github.com/Fortunejite/Talkify.git`
+2. Navigate to the project directory: `cd Talkify`
 3. Install the dependencies: `pip install -r requirements.txt`
-4. Start the local development server: `gunicorn talkify:app`
+4. Start the local development server: `gunicorn app:app`
 5. Access Talkify in your browser at: `http://localhost:8000`
 
 Note: Make sure you have Python and pip installed on your machine.
