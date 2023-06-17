@@ -64,20 +64,24 @@ $(document).ready(function() {
   
   
   $('.chat-box').click(function (event) {
-    $('.right-container').css('display', 'block');
-    get_messages($(this).find('#ffriend').text())
-    let socket = io();
-    let url = $(this).find('#ffriend').text() + '-' + name;
-    socket.on(url, function(data){
-      if (data['sent_by'] == $('#friend').text()) {
-        const parent = $('.chat-container')
-        const new_message = $('<div class="message-box friend-message"></div>')
-        new_message.append('<p>' + data['body'] + '<br><span>' + data['time'] + '</span></p>');
-        parent.append(new_message)
-        const div = $('.chat-container');
-        div.scrollTop(div[0].scrollHeight)
-      }
-    });
+    if ($(window).width() < 800) {
+      $('.right-container').css('display', 'block');
+      $('.left-container').css('display', 'none');
+    } else {
+      get_messages($(this).find('#ffriend').text())
+      let socket = io();
+      let url = $(this).find('#ffriend').text() + '-' + name;
+      socket.on(url, function(data){
+        if (data['sent_by'] == $('#friend').text()) {
+          const parent = $('.chat-container')
+          const new_message = $('<div class="message-box friend-message"></div>')
+          new_message.append('<p>' + data['body'] + '<br><span>' + data['time'] + '</span></p>');
+          parent.append(new_message)
+          const div = $('.chat-container');
+          div.scrollTop(div[0].scrollHeight)
+        }
+      });
+    }
   });
 
   $("#send").click( function(event) {
@@ -99,6 +103,18 @@ $(document).ready(function() {
         window.location.href = '/';
       }
     });
+  });
+
+  $('#back').click(function() {
+    if ($(window).width() < 800) {
+      // Execute code for small screens
+      $('.right-container').css('display', 'none');
+      $('.left-container').css('display', 'block');
+    } else {
+      // Execute code for larger screens
+      $('.right-container').empty();
+      $('.right-container').append('<h2>Click on a friend to chat</h2>');
+    }
   });
 
   $('.user-img').click(function() {
