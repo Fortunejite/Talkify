@@ -1,3 +1,23 @@
+function sendClick (event) {
+    event.preventDefault();
+    if ($('#message').val()) {
+      send_message(name)
+    } else{
+      alert('Pls type your message');
+    }
+}
+
+function backClick() {
+    if ($(window).width() < 800) {
+      // Execute code for small screens
+      $('.right-container').css('display', 'none');
+      $('.left-container').css('display', 'block');
+    } else {
+      // Execute code for larger screens
+      $('.right-container').empty();
+      $('.right-container').append('<h2>Click on a friend to chat</h2>');
+    }
+  
 function get_messages(name, code) {
   $.ajax({
     url: '/chat/' + name,
@@ -36,6 +56,8 @@ function get_messages(name, code) {
       } else {
         $('.right-container').css('opacity', 1);
       }
+      $("#send").click(sendClick);
+      $('#back').click(backClick);
     }
   });
 }
@@ -62,6 +84,8 @@ function send_message (name) {
 
   })
 }
+
+
 
 $(document).ready(function() {
   const name = $('h6').text();
@@ -103,39 +127,6 @@ $(document).ready(function() {
           div.scrollTop(div[0].scrollHeight)
         }
       });
-    }
-  });
-
-  $("#send").click( function(event) {
-    event.preventDefault();
-    if ($('#message').val()) {
-      send_message(name)
-    } else{
-      alert('Pls type your message');
-    }
-  });
-
-  $('#posts').click(function() {
-    $.ajax({
-      url: '/logout',
-      type: 'POST',
-      success: function(response) {
-        // Handle successful logout
-        alert('Logout successful');
-        window.location.href = '/';
-      }
-    });
-  });
-
-  $('#back').click(function() {
-    if ($(window).width() < 800) {
-      // Execute code for small screens
-      $('.right-container').css('display', 'none');
-      $('.left-container').css('display', 'block');
-    } else {
-      // Execute code for larger screens
-      $('.right-container').empty();
-      $('.right-container').append('<h2>Click on a friend to chat</h2>');
     }
   });
 
