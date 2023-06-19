@@ -17,6 +17,7 @@ function backClick() {
       $('.right-container').empty();
       $('.right-container').append('<h2>Click on a friend to chat</h2>');
     }
+}
   
 function get_messages(name, code) {
   $.ajax({
