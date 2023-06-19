@@ -118,6 +118,7 @@ $(document).ready(function() {
       get_messages($(this).find('#ffriend').text(), codes)
       let socket = io();
       let url = $(this).find('#ffriend').text() + '-' + name;
+      console.log(url);
       socket.on(url, function(data){
         if (data['sent_by'] == $('#friend').text()) {
           const parent = $('.chat-container')
