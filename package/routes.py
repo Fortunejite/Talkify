@@ -174,8 +174,8 @@ def send(friend):
         'sent_by': owner 
     }
     current_user.save_message(friend, message)
-    print(text)
     socketio.emit(f'{current_user.username}-{friend}', message)
+    print(f'{current_user.username}-{friend}')
     return(jsonify(message))
 
 @app.route('/room')
