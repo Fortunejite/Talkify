@@ -4,6 +4,7 @@ function get_messages(name, code) {
     type: 'GET',
     success: function(response) {
       const messages = response.messages;
+      if ($(window).width() > 800) {                                                                                                                                             $('.right-container').css('opacity', 0);                                                                                                                                $('.right-container').html(code);                                                                                                                                    }
       $('#friend').text(name)
 
       $('.dp').attr('src', "/image/"+name);
@@ -28,14 +29,12 @@ function get_messages(name, code) {
             parent.append(new_message)
           }
         }
-        const div = $('.chat-container');
-        div.scrollTop(div[0].scrollHeight)
       }
       if ($(window).width() < 800) {
         $('.right-container').css('display', 'block');
         $('.left-container').css('display', 'none');
       } else {
-        $('.right-container').html(code)
+        $('.right-container').css('opacity', 1);
       }
     }
   });
@@ -156,5 +155,13 @@ $(document).ready(function() {
     window.location.href = '/users';
   });
   
+  $('form').submit(function (event) {
+    event.preventDefault();
+    if ($('#message').val()) {
+      send_message(name)
+    } else{
+	alert('Pls type your message');
+    }
+	    });
 
 });
