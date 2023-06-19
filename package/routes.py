@@ -175,7 +175,6 @@ def send(friend):
     }
     current_user.save_message(friend, message)
     socketio.emit(f'{current_user.username}-{friend}', message)
-    print(f'{current_user.username}-{friend}')
     return(jsonify(message))
 
 @app.route('/room')
