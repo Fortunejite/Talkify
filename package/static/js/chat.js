@@ -1,4 +1,4 @@
-function get_messages(name) {
+function get_messages(name, code) {
   $.ajax({
     url: '/chat/' + name,
     type: 'GET',
@@ -31,6 +31,12 @@ function get_messages(name) {
         const div = $('.chat-container');
         div.scrollTop(div[0].scrollHeight)
       }
+      if ($(window).width() < 800) {
+        $('.right-container').css('display', 'block');
+        $('.left-container').css('display', 'none');
+      } else {
+        $('.right-container').html(code)
+      }
     }
   });
 }
@@ -60,15 +66,32 @@ function send_message (name) {
 
 $(document).ready(function() {
   const name = $('h6').text();
+  const codes = $('.right-container').html();
+  if ($(window).width() > 800) {
+    $('.right-container').empty();
+    $('.right-container').append('<h2>Click on a friend to chat</h2>');
+  }
 
   
   
   $('.chat-box').click(function (event) {
     if ($(window).width() < 800) {
-      $('.right-container').css('display', 'block');
-      $('.left-container').css('display', 'none');
-    } else {
       get_messages($(this).find('#ffriend').text())
+      let socket = io();
+      let url = $(this).find('#ffriend').text() + '-' + name;
+      socket.on(url, function(data){
+        if (data['sent_by'] == $('#friend').text()) {
+          const parent = $('.chat-container')
+          const new_message = $('<div class="message-box friend-message"></div>')
+          new_message.append('<p>' + data['body'] + '<br><span>' + data['time'] + '</span></p>');
+          parent.append(new_message)
+          const div = $('.chat-container');
+          div.scrollTop(div[0].scrollHeight)
+        }
+      });
+    } else {
+      $('.right-container').empty();
+      get_messages($(this).find('#ffriend').text(), codes)
       let socket = io();
       let url = $(this).find('#ffriend').text() + '-' + name;
       socket.on(url, function(data){
@@ -133,7 +156,5 @@ $(document).ready(function() {
     window.location.href = '/users';
   });
   
-
-  $('.right-container').css('display','none')
 
 });
