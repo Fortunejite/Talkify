@@ -1,24 +1,3 @@
-function sendClick (event) {
-    event.preventDefault();
-    if ($('#message').val()) {
-      send_message(name)
-    } else{
-      alert('Pls type your message');
-    }
-}
-
-function backClick() {
-    if ($(window).width() < 800) {
-      // Execute code for small screens
-      $('.right-container').css('display', 'none');
-      $('.left-container').css('display', 'block');
-    } else {
-      // Execute code for larger screens
-      $('.right-container').empty();
-      $('.right-container').append('<h2>Click on a friend to chat</h2>');
-    }
-}
-  
 function get_messages(name, code) {
   $.ajax({
     url: '/chat/' + name,
@@ -89,6 +68,26 @@ function send_message (name) {
 
 
 $(document).ready(function() {
+    function sendClick (event) {
+    event.preventDefault();
+    if ($('#message').val()) {
+      send_message($('h6').text();)
+    } else{
+      alert('Pls type your message');
+    }
+}
+
+function backClick() {
+    if ($(window).width() < 800) {
+      // Execute code for small screens
+      $('.right-container').css('display', 'none');
+      $('.left-container').css('display', 'block');
+    } else {
+      // Execute code for larger screens
+      $('.right-container').empty();
+      $('.right-container').append('<h2>Click on a friend to chat</h2>');
+    }
+}
   const name = $('h6').text();
   const codes = $('.right-container').html();
   if ($(window).width() > 800) {
