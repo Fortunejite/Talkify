@@ -71,7 +71,7 @@ $(document).ready(function() {
     function sendClick (event) {
     event.preventDefault();
     if ($('#message').val()) {
-      send_message($('h6').text();)
+      send_message($('h6').text())
     } else{
       alert('Pls type your message');
     }
