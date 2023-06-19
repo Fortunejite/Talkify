@@ -154,14 +154,5 @@ $(document).ready(function() {
   $('#users').click(function(event){
     window.location.href = '/users';
   });
-  
-  $('form').submit(function (event) {
-    event.preventDefault();
-    if ($('#message').val()) {
-      send_message(name)
-    } else{
-	alert('Pls type your message');
-    }
-	    });
 
 });
