@@ -275,7 +275,7 @@ input {
 }
 
 @media screen and (max-width: 800px) {
-  .overlay{
+  .overlay-container{
     display: none;
   }
 
