@@ -269,3 +269,17 @@ input {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+#or, .mobile {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  .overlay{
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+  }
+}
