@@ -282,4 +282,13 @@ input {
   .mobile {
     display: block;
   }
+
+	.sign-up-container {
+		display: none;
+	}
+
+	.sign-in-container {
+		width: 100%;
+		height: 80%;
+	}
 }
