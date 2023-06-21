@@ -1,9 +1,9 @@
 .notifications, #main, body{
-    background: #343A40;
+    background: #1B1D24;
 }
 
 p, h1, h3 {
-    color: #007BFF;
+    color: white;
 }
 
 img {
@@ -19,5 +19,26 @@ img {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #007BFF;
+    border-bottom: 1px solid #72EB3A;
+}
+
+#notifications {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+button {
+    border-radius: 20px;
+	border: 1px solid #72EB3A;
+	background-color: #72EB3A;
+	color: #1B1D24;
+	font-size: 12px;
+  padding: 10px;
+  margin-right: 10px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
 }
